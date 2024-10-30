@@ -1,0 +1,21 @@
+.navbar-bg {
+    min-height: 4rem;
+    background-color: #eef3ed;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .05), inset 0 -1px 0 rgba(0, 0, 0, .1);
+}
+
+.navbar-bg .navbar-brand .navbar-button-brand{
+    color: #414040;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-bg .nav-link{
+    color: #aaaaaa;
+}
+
+.navbar-bg .nav-link.active{
+    color: #aaaaaa !important;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
