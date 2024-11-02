@@ -6,3 +6,20 @@
 .carousel {
     padding: 20px;
 }
+
+.card-subs {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    margin: auto;
+    .card-header{
+        background-color: #0d0d3a22;
+    }
+}
+
+.container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
