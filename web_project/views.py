@@ -6,3 +6,6 @@ def inicio(request):
 
 def navbar(request):
     return render(request, 'navbar.html')
+
+def contact(request):
+    return render(request, 'contact.html')

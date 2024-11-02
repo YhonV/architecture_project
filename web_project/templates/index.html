@@ -3,8 +3,53 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/index.css'%}">
+
+
+<div class="container-cards">
+    <div class="card">
+        <img src="{% static 'img/lavadora.webp' %}" class="card-img-top" alt="Lavadora">
+        <div class="card-body">
+          <h5 class="card-title">Línea blanca para tu hogar</h5>
+          <p class="card-text">Conoce lo mejor de la línea blanca al mejor precio.</p>
+          <a href="#" class="btn btn-primary d-flex justify-content-center">Ir a catalogo</a>
+        </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+        <img  src="{% static 'img/camara.avif' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Protege tu hogar</h5>
+          <p class="card-text">¿Necesitas protección? No lo dudes, acá lo consigues!</p>
+          <a href="#" class="btn btn-primary d-flex justify-content-center">Ir a catalogo</a>
+        </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+        <img  src="{% static 'img/samsung.webp' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Conoce lo ultimo en smartphones</h5>
+          <p class="card-text">Disfruta de lo último en celulares, cuotas sin interés</p>
+          <a href="#" class="btn btn-primary d-flex justify-content-center" id="liveToastBtn">Ir a catalogo</a>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="{% static 'img/logo.png' %}" class="rounded me-2" alt="..." width="40" height="40">
+      <strong class="me-auto">Solo es una prueba</strong>
+      <small>11 mins ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Hola, esto es una prueba de un toast en tiempo real.
+    </div>
+  </div>
+</div>
+
+
+
 <!-- =============== Carousel =============== -->
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+{% comment %} <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -29,7 +74,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
-</div>
+</div> {% endcomment %}
 
 <!-- =============== Newsletter =============== -->
 <div class="container-center">
@@ -47,5 +92,5 @@
         </div>
     </div>
 </div>
-
+<script src="{% static 'js/index.js' %}"></script>
 {% endblock content %}
