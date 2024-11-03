@@ -4,6 +4,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/index.css'%}">
 
+<!-- =============== Cards =============== -->
 
 <div class="container-cards">
     <div class="card">
@@ -11,7 +12,7 @@
         <div class="card-body">
           <h5 class="card-title">Línea blanca para tu hogar</h5>
           <p class="card-text">Conoce lo mejor de la línea blanca al mejor precio.</p>
-          <a href="#" class="btn btn-primary d-flex justify-content-center">Ir a catalogo</a>
+          <a href="#" class="btn btn-outline-primary d-flex justify-content-center">Ir a catalogo</a>
         </div>
     </div>
     <div class="card" style="width: 18rem;">
@@ -19,7 +20,7 @@
         <div class="card-body">
           <h5 class="card-title">Protege tu hogar</h5>
           <p class="card-text">¿Necesitas protección? No lo dudes, acá lo consigues!</p>
-          <a href="#" class="btn btn-primary d-flex justify-content-center">Ir a catalogo</a>
+          <a href="#" class="btn btn-outline-primary d-flex justify-content-center">Ir a catalogo</a>
         </div>
     </div>
     <div class="card" style="width: 18rem;">
@@ -27,54 +28,10 @@
         <div class="card-body">
           <h5 class="card-title">Conoce lo ultimo en smartphones</h5>
           <p class="card-text">Disfruta de lo último en celulares, cuotas sin interés</p>
-          <a href="#" class="btn btn-primary d-flex justify-content-center" id="liveToastBtn">Ir a catalogo</a>
+          <a href="#" class="btn btn-outline-primary d-flex justify-content-center">Ir a catalogo</a>
         </div>
     </div>
 </div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <img src="{% static 'img/logo.png' %}" class="rounded me-2" alt="..." width="40" height="40">
-      <strong class="me-auto">Solo es una prueba</strong>
-      <small>11 mins ago</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-      Hola, esto es una prueba de un toast en tiempo real.
-    </div>
-  </div>
-</div>
-
-
-
-<!-- =============== Carousel =============== -->
-{% comment %} <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{% static 'img/second_slide.webp' %}" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="{% static 'img/first_slide.webp' %}" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="{% static 'img/third_slide.webp' %}" class="d-block w-100" alt="...">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div> {% endcomment %}
 
 <!-- =============== Newsletter =============== -->
 <div class="container-center">
@@ -89,7 +46,22 @@
                 </div>
                 <input type="text" class="form-control" placeholder="Correo electronico" aria-label="Username" aria-describedby="basic-addon1">
             </div>
+            <button type="submit" class="btn btn-outline-primary" id="newsletterBtn">Suscribirte</button>
         </div>
+    </div>
+</div>
+
+<!-- =============== Toast del Newsletter (Le definimos un id al contenedor del toast junto con id al boton que lo gatilla)=============== -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToastNewsLetter" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <i class="fa-regular fa-square-check"></i>
+        <strong class="me-auto ms-2">Suscríto con éxito</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Hola! Te has suscrito con éxito a nuestro Newsletter. Revisa tu correo para más información.
+      </div>
     </div>
 </div>
 <script src="{% static 'js/index.js' %}"></script>

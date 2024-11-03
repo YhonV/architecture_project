@@ -50,3 +50,8 @@
         flex: 1 1 calc(100% - 40px);
     }
 }
+
+.toast-header{
+    background-color: #39c43e;
+    color: white;
+}
