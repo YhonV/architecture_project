@@ -4,6 +4,35 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/index.css'%}">
 
+
+<!-- =============== Carrousel =============== -->
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+      <div class="carousel-item active">
+          <img src="{% static 'img/first_slide.webp' %}" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+          <img src="{% static 'img/second_slide.webp' %}" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+          <img src="{% static 'img/third_slide.webp' %}" class="d-block w-100" alt="...">
+      </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
 <!-- =============== Cards =============== -->
 
 <div class="container-cards">
@@ -36,15 +65,14 @@
 <!-- =============== Newsletter =============== -->
 <div class="container-center">
     <div class="card card-subs">
-        <h5 class="card-header">¡Suscríbete!</h5>
+        <h5 class="card-header" id="news-head"> ¿Quieres un 15% de descuento en tu primera compra? </h5>
         <div class="card-body">
-            <h5 class="card-title">Recibe un 15% de descuento en tu primera compra.</h5>
-            <p class="card-text">Suscríbete a nuestro Newsletter para recibir más promociones y códigos de descuento.</p>
+            <p class="card-text" id="news-text">Suscríbete a nuestro Newsletter para recibir un descuento en tu primera compra y nuestras promociones.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">@</span>
                 </div>
-                <input type="text" class="form-control" placeholder="Correo electronico" aria-label="Username" aria-describedby="basic-addon1">
+                <input id="news-correo" type="text" class="form-control" placeholder="Correo electronico" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <button type="submit" class="btn btn-outline-primary" id="newsletterBtn">Suscribirte</button>
         </div>

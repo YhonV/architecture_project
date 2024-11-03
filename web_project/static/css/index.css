@@ -12,16 +12,26 @@
     justify-content: center;
     width: 70%;
     margin: auto;
-    .card-header{
-        background-color: #0d0d3a22;
-    }
 }
+
 
 .container-center {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+}
+
+#news-head{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#news-text{
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .container-cards {
@@ -37,7 +47,22 @@
     flex: 1 1 calc(33.333% - 40px);
     box-sizing: border-box;
     margin: 10px;
+    transition: transform 0.3s ease; /* Agrega animación al pasar el cursor */
+
 }
+
+.card:hover {
+    transform: translateY(-5px); /* Eleva ligeramente la tarjeta al hacer hover */
+}
+
+
+#newsletterBtn{
+    display: flex;
+    justify-content: center;
+    width: 20%; 
+    margin: 0 auto;
+}
+
 
 @media (max-width: 1200px) {
     .card {
@@ -55,3 +80,4 @@
     background-color: #39c43e;
     color: white;
 }
+

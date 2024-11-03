@@ -1,0 +1,302 @@
+* {
+    box-sizing: border-box
+}
+
+#search {
+    outline: none;
+    border: none;
+    display: inline-block
+}
+.fa-search {
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: 3px;
+    padding-right: 20px
+}
+
+.form-group {
+    margin-bottom: 5px
+}
+
+label {
+    padding-left: 10px
+}
+
+.form-group:last-child {
+    margin-bottom: 0
+}
+
+h6 {
+    margin-bottom: 0px
+}
+
+#sort {
+    outline: none;
+    border: none
+}
+
+.card-body {
+    padding: 8px
+}
+
+.sign {
+    width: 25px;
+    height: 25px
+}
+
+.discount {
+    border: 1px solid rgb(255, 0, 0);
+    border-radius: 5px;
+    width: 65px;
+    position: absolute;
+    top: 2%
+}
+
+@media(min-width:1200px) {
+    #search {
+        width: 300px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .text {
+        display: none
+    }
+
+    #sidebar {
+        width: 30%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 70%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        width: 300px;
+        height: 330px;
+        border: none
+    }
+
+    .card-img-top {
+        width: 295px;
+        height: 200px;
+        border-radius: 10px
+    }
+
+    del {
+        padding-right: 2px
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+@media(min-width:992px) and (max-width:1199px) {
+    #search {
+        width: 300px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .text {
+        display: none
+    }
+
+    #sidebar {
+        width: 30%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 70%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        width: 200px;
+        height: 330px;
+        border: none
+    }
+
+    .card-img-top {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px
+    }
+
+    .fa-plus,
+    .fa-minus {
+        font-size: 12px
+    }
+
+    .sign {
+        height: 25px
+    }
+
+    .price {
+        width: 99px
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+@media(min-width:768px) and (max-width:991px) {
+    #search {
+        width: 300px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .text {
+        display: none
+    }
+
+    #sidebar {
+        width: 35%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 65%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        border: none
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+@media(min-width:576px) and (max-width:767px) {
+    .text {
+        display: none
+    }
+
+    #search {
+        width: 240px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .fa-search {
+        padding: 3px;
+        font-size: 18px
+    }
+
+    #sidebar {
+        width: 40%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 60%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        border: none
+    }
+
+    #off {
+        padding-left: 2px
+    }
+
+    #sorting span,
+    #res {
+        font-size: 14px
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+/* Ocultar el checkbox pero mantenerlo funcional */
+.filter-toggle {
+    display: none;
+}
+
+@media(max-width: 575px) {
+    #sidebar {
+        display: none;
+    }
+
+    .filter {
+        margin-left: 70%;
+        margin-top: 2%;
+        z-index: 100;
+    }
+
+    /* Estilos para el botón */
+    .filter label.btn {
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+        display: block;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    /* Cambiar estilo del botón cuando está activo */
+    .filter-toggle:checked + .filter label.btn {
+        color: white;
+    }
+
+    /* Contenedor de filtros móvil */
+    .mobile-filter {
+        display: none;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 15px;
+        width: 100%;
+        position: relative;
+        z-index: 99;
+    }
+
+    /* Mostrar filtros cuando el checkbox está marcado */
+    .filter-toggle:checked ~ .mobile-filter {
+        display: block;
+    }
+
+    .mobile-filter-content {
+        padding: 10px;
+    }
+
+    .mobile-filter .form-group {
+        margin-bottom: 10px;
+    }
+}
+
+/* Ocultar versión móvil en escritorio */
+@media(min-width: 576px) {
+    .mobile-filter,
+    .filter {
+        display: none;
+    }
+}
+

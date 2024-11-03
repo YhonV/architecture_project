@@ -1,0 +1,231 @@
+{% extends "template.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/catalogo.css'%}">
+
+   
+<input type="text" id="search" class="bg-light" placeholder="Buscar">
+<button class="fa fa-search text-muted"></button> 
+
+<input type="checkbox" id="filter-toggle" class="filter-toggle">
+<div class="filter"> 
+    <label for="filter-toggle" class="btn btn-outline-primary d-flex justify-content-center">
+        Filtros<span class="fa fa-filter pl-1"></span>
+    </label>
+</div>
+<div class="mobile-filter">
+    <div class="mobile-filter-content">
+        <p class="pl-sm-0 pl-2"> Inicio | <b>Todos los productos</b></p>
+        <div class="border-bottom pb-2 ml-2">
+            <h4 id="burgundy">Filtros</h4>
+        </div>
+        <div class="py-2 border-bottom ml-3">
+            <h6 class="font-weight-bold">Categorías</h6>
+            <div id="orange"><span class="fa fa-minus"></span></div>
+            <form>
+                <div class="form-group"> <input type="checkbox" id="electro"> <label for="artisan">Electrodmomésticos</label> </div>
+                <div class="form-group"> <input type="checkbox" id="telefonia"> <label for="breakfast">Telefonía</label> </div>
+                <div class="form-group"> <input type="checkbox" id="vestuario"> <label for="healthy">Vestuario</label> </div>
+                <div class="form-group"> <input type="checkbox" id="libros"> <label for="healthy">Libros</label> </div>
+            </form>
+        </div>
+    
+        <div class="py-2 ml-3">
+            <h6 class="font-weight-bold">Ofertas</h6>
+            <div id="orange"><span class="fa fa-minus"></span></div>
+            <form>
+                <div class="form-group"> <input type="checkbox" id="15off"> <label for="15off">15% off</label> </div>
+                <div class="form-group"> <input type="checkbox" id="25off"> <label for="25off" id="off">25% off</label> </div>
+                <div class="form-group"> <input type="checkbox" id="25off"> <label for="35off" id="off">35% off</label> </div>
+            </form>
+        </div>
+        <div class="py-2 ml-3">
+            <h6 class="font-weight-bold">Precio</h6>
+            <div id="orange"><span class="fa fa-minus"></span></div>
+            <label for="min">Mínimo</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text">$</span>
+                <input type="text" class="form-control" aria-label="Monto en pesos (con punto)" placeholder="10.000" id="precio_min" name="precio_min">
+            </div>
+            <label for="max">Máximo</label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="text" class="form-control" aria-label="Monto en pesos (con punto)" placeholder="100.000" id="precio_max" name="precio_max">
+            </div>
+            <br>
+            <button id="btn-aplicar" style="margin-bottom: 10px;" type="button" class="btn btn-primary">Aplicar</button>
+        </div>    
+    </div>
+</div>
+<!-- Sidebar filter section -->
+<section id="sidebar">
+    <p> Inicio | <b>Todos los productos</b></p>
+    <div class="border-bottom pb-2 ml-2">
+        <h4 id="burgundy">Filtros</h4>
+    </div>
+    <div class="py-2 border-bottom ml-3">
+        <h6 class="font-weight-bold">Categorías</h6>
+        <div id="orange"><span class="fa fa-minus"></span></div>
+        <form>
+            <div class="form-group"> <input type="checkbox" id="electro"> <label for="artisan">Electrodmomésticos</label> </div>
+            <div class="form-group"> <input type="checkbox" id="telefonia"> <label for="breakfast">Telefonía</label> </div>
+            <div class="form-group"> <input type="checkbox" id="vestuario"> <label for="healthy">Vestuario</label> </div>
+            <div class="form-group"> <input type="checkbox" id="libros"> <label for="healthy">Libros</label> </div>
+        </form>
+    </div>
+    
+    <div class="py-2 ml-3">
+        <h6 class="font-weight-bold">Ofertas</h6>
+        <div id="orange"><span class="fa fa-minus"></span></div>
+        <form>
+            <div class="form-group"> <input type="checkbox" id="15off"> <label for="15off">15% off</label> </div>
+            <div class="form-group"> <input type="checkbox" id="25off"> <label for="25off" id="off">25% off</label> </div>
+            <div class="form-group"> <input type="checkbox" id="25off"> <label for="35off" id="off">35% off</label> </div>
+        </form>
+    </div>
+
+    <div class="py-2 ml-3">
+        <h6 class="font-weight-bold">Precio</h6>
+        <div id="orange"><span class="fa fa-minus"></span></div>
+        <label for="min">Mínimo</label>
+        <div class="input-group mb-3">
+            <span class="input-group-text">$</span>
+            <input type="text" class="form-control" aria-label="Monto en pesos (con punto)" placeholder="10.000" id="precio_min" name="precio_min">
+        </div>
+        <label for="max">Máximo</label>
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="text" class="form-control" aria-label="Monto en pesos (con punto)" placeholder="100.000" id="precio_max" name="precio_max">  
+        </div>
+        <br>
+        <button id="btn-aplicar" style="margin-bottom: 10px;" type="button" class="btn btn-primary">Aplicar</button>
+    </div>
+</section>
+<!-- products section -->
+<section id="products">
+    <div class="container">
+        <div class="d-flex flex-row">
+            <div class="text-muted m-2" id="res">Mostrando 9 resultados</div>
+            <div class="ml-auto mr-lg-4">
+                <div id="sorting" class="border rounded p-1 m-1"> <span class="text-muted">Ordenar por:</span> <select name="sort" id="sort">
+                        <option value="popularity"><b>Más Comprados</b></option>
+                        <option value="prcie"><b>Precio</b></option>
+                        <option value="rating"><b>Calificaciones</b></option>
+                    </select> </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv1.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Telvisor SAMSUNG 50" QLED</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$349.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv2.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor LG 42" LED</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$199.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center tn w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv3.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor HISENSE 55" LED</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$319.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv4.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor SAMSUNG 65" LED</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$419.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv5.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor LG 70" Nano Cell</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$949.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card d-relative"> <img class="card-img-top" src="{% static 'img/tv6.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor TCL 32" HD</b> </h5>
+                        <div class="rounded bg-white discount" id="orange">15% off</div>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted price"><del>$199.990</del>$169.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span>1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv2.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor LG 42" LED</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$199.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center tn w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv3.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor HISENSE 55" LED</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$319.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                <div class="card"> <img class="card-img-top" src="{% static 'img/tv4.jpg' %}">
+                    <div class="card-body">
+                        <h5><b>Televisor SAMSUNG 65" LED</b> </h5>
+                        <div class="d-flex flex-row my-2">
+                            <div class="text-muted">$419.990</div>
+                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
+                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div style="clear: both;"></div>
+<!-- Agregar al final del body si no los tienes ya -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+{% endblock content %}
