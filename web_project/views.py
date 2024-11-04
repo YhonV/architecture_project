@@ -9,3 +9,9 @@ def contact(request):
 
 def catalogo(request):
     return render(request, 'catalogo.html')
+
+def perfil(request):
+    return render(request, 'perfil.html')
+
+def historial(request):
+    return render(request, 'historial-compra.html')

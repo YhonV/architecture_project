@@ -1,0 +1,94 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/perfil.css'%}">
+
+<div class="profile-container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Hola, {{ user.first_name }}</h1>
+    </div>
+
+    <!-- Navigation Menu -->
+    <div class="nav-menu">
+        <a href="{% url 'perfil' %}" class="nav-item active">
+            <i class="fas fa-user"></i>
+            Mi perfil
+        </a>
+        <a href="{% url 'historial' %}" class="nav-item">
+            <i class="fas fa-box"></i>
+            Mis compras
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+            Ayuda
+        </a>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href=""#"" class="sidebar-item">
+            <i class="fas fa-user"></i>
+            Datos personales
+        </a>
+        <a href=""#"" class="sidebar-item">
+            <i class="fas fa-map-marker-alt"></i>
+            Direcciones
+        </a>
+        <a href=""#"" class="sidebar-item">
+            <i class="fas fa-credit-card"></i>
+            Medios de pago
+        </a>
+        <a href=""#"" class="sidebar-item">
+            <i class="fas fa-heart"></i>
+            Mis listas
+        </a>
+        <a href="#" class="sidebar-item">
+            <i class="fas fa-cog"></i>
+            Cambiar contraseña
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2>Datos personales</h2>
+        <form method="POST" class="profile-form">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}" />
+                </div>
+                <div class="form-group">
+                    <label>Primer apellido</label>
+                    <input type="text" name="last_name1" value="{{ user.last_name1 }}" />
+                </div>
+                <div class="form-group">
+                    <label>Segundo apellido</label>
+                    <input type="text" name="last_name2" value="{{ user.last_name2 }}" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tipo de documento</label>
+                    <input type="text" name="document_type" value="RUT" readonly />
+                </div>
+                <div class="form-group">
+                    <label>Celular</label>
+                    <input type="tel" name="phone" value="{{ user.phone }}" />
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" name="email" value="{{ user.email }}" />
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button type="submit" class="btn btn-outline-primary d-flex justify-content-center">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
