@@ -1,0 +1,91 @@
+:root {
+    --primary-color: #4F46E5;
+    --primary-hover: #4338CA;
+    --background-color: #F3F4F6;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.brand-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.brand-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+.brand-name {
+    font-weight: 600;
+    color: #111827;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-container {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.promo-text {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #D1D5DB;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.login-text {
+    color: #6B7280;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+}

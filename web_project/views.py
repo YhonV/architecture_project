@@ -1,8 +1,11 @@
+from django.http import JsonResponse
+from django.urls import reverse
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render
-from .models import Producto, TipoProducto
+
 from web_project.forms import RegistroForm
 from django.http import JsonResponse
-
+from .models import Producto, TipoProducto
 # Create your views here.
 def inicio(request):
     return render(request, 'index.html')
@@ -20,7 +23,24 @@ def historial(request):
     return render(request, 'historial-compra.html')
 
 def login(request):
-    return render(request, 'login.html')
+    if request.method == 'POST':
+        usuario = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if not usuario:
+            return JsonResponse({'status': 'error', 'message': 'Debe ingresar un nombre de usuario'}, status=400)
+
+        if not password:
+            return JsonResponse({'status': 'error', 'message': 'Debe ingresar la contraseña'}, status=400)
+
+        user = authenticate(request, username=usuario, password=password)
+        if user is None:
+            return JsonResponse({'status': 'error', 'message': 'Usuario o contraseña incorrecto'}, status=400)
+        else:
+            login(request, user)
+            return JsonResponse({'status': 'success', 'redirect': reverse('inicio')})
+
+    return render(request,'registration/login.html')
 
 def registro(request):
     form = RegistroForm()
