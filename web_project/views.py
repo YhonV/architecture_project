@@ -21,3 +21,11 @@ def login(request):
 
 def registro(request):
     return render(request, 'registro.html')
+
+def inventario(request):
+    return render(request, 'inventario.html')
+
+
+#Crear un producto en el inventario.html
+def crear_producto(request):
+    return render(request, 'crear-producto.html')

@@ -1,0 +1,45 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/inventario.css' %}">
+<div class="container mt-10" style="margin-top: 200px;">
+  <!-- Botón Agregar -->
+  <div class="mb-2">
+    <a href="#" class="btn btn-success agregarProducto" data-id="{{ producto.id }}" data-nombre="{{ producto.nombre }}" data-categoria="{{ producto.nombre_categoria_id }}" data-stock="{{ producto.stock }}" data-precio="{{ producto.precio }}" data-precio="{{ producto.imagen }}">Agregar Producto</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th><a href="?orden=nombre&direccion=asc">Nombre &#8593;</a> | <a href="?orden=nombre&direccion=desc">Nombre &#8595;</a></th>
+          <th><a href="?orden=nombre_categoria&direccion=asc">Categoría &#8593;</a> | <a href="?orden=nombre_categoria&direccion=desc">Categoría &#8595;</a></th>
+          <th><a href="?orden=stock&direccion=asc">Stock &#8593;</a> | <a href="?orden=stock&direccion=desc">Stock &#8595;</a></th>
+          <th>Precio</th>
+          <th>Acciones</th> 
+        </tr>
+      </thead>
+      <tbody>
+        {% for producto in productos %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.nombre_categoria_id }}</td>
+          <td>{{ producto.stock }}</td>
+          <td>{{ producto.precio|floatformat:"-1" }}</td>
+          <td>
+            <!-- Botones Editar y Eliminar -->
+            <a href="#" class="btn btn-primary btn-sm editar-btn" data-id="{{ producto.id }}" data-nombre="{{ producto.nombre }}" data-categoria="{{ producto.nombre_categoria_id }}" data-stock="{{ producto.stock }}" data-precio="{{ producto.precio }}">Editar</a>
+            <a href="#" class="btn btn-danger btn-sm eliminar-btn" data-id="{{ producto.id }}" data-nombre="{{ producto.nombre }}" data-categoria="{{ producto.nombre_categoria_id }}" data-stock="{{ producto.stock }}" data-precio="{{ producto.precio }}">Eliminar</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}
