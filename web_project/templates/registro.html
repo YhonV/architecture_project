@@ -1,0 +1,80 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crear Cuenta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="text-center my-4">
+            <img src="{% static 'img/jmc-w-bg.png' %}" alt="Logo JMC" class="img-fluid">
+          </div>
+          <div class="p4 bg-light border rounded">
+            <h1 class="text-center">Registrarse</h1>
+            <form id="register-form" method="POST">
+              {% csrf_token %}
+              {{form|crispy}}
+              <div class="d-grid gap-2">
+                <input type="submit" value="Registrarse" class="btn btn-primary btn-lg">
+              </div>
+            </form>
+          </div>
+          <h4 class="text-center mt-4">¿Ya tienes una cuenta?</h4>
+          <div class="d-grid">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Iniciar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+      $(document).ready(function() {
+        $('#register-form').submit(function(event) {
+          event.preventDefault();
+          $.ajax({
+            type: 'POST',
+            url: '{% url "creaCuenta" %}', 
+            data: $(this).serialize(),
+            success: function(response) {
+              if (response.status === 'success') {
+                Swal.fire({
+                  title: '¡Registro exitoso!',
+                  text: 'Serás redirigido a la página de inicio de sesión en unos segundos.',
+                  icon: 'success',
+                  showConfirmButton: false,
+                  timer: 3000
+                }).then(() => {
+                  window.location.href = response.redirect;
+                });
+              } else {
+                Swal.fire({
+                  title: 'Error',
+                  text: response.message,
+                  icon: 'error',
+                  confirmButtonText: 'Cerrar'
+                });
+              }
+            },
+            error: function() {
+              Swal.fire({
+                title: 'Error',
+                text: 'Ocurrió un error inesperado. Inténtalo de nuevo.',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
