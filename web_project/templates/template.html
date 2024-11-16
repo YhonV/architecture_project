@@ -35,13 +35,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'contact' %}" tabindex="-1" aria-disabled="true"><button type="button" class="btn btn-outline-primary">Contacto</button></a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}" tabindex="-1" aria-disabled="true"><button type="button" class="btn btn-outline-primary">Inicia Sesión</button></a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <button type="button" class="btn btn-outline-primary">Mi perfil</button></a>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% url 'perfil' %}">Ver perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Historial de compras</a></li>
+                            <li><a class="dropdown-item" href="{% url 'historial' %}">Historial de compras</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item warning" href="#"><button type="button" class="btn btn-outline-danger">Cerrar sesión</button></a></li>
                         </ul>

@@ -15,3 +15,6 @@ def perfil(request):
 
 def historial(request):
     return render(request, 'historial-compra.html')
+
+def login(request):
+    return render(request, 'login.html')
