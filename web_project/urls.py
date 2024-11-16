@@ -2,6 +2,8 @@ from django.urls import path, include
 from web_project import views
 from rest_framework import routers
 from .api import ProductViewSet
+from django.conf.urls.static import static
+from django.conf import settings
 
 ## Se crea un objeto de la clase DefaultRouter
 ## Esto nos permite crear una API RESTful, nos entrega una URL para cada vista
@@ -19,4 +21,4 @@ urlpatterns = [
     path("registro/", views.registro, name="registro"),
     path("inventario/", views.inventario, name="inventario"),
     path("", include(router.urls))
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
