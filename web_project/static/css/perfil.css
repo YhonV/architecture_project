@@ -21,7 +21,7 @@
 }
 
 /* Navigation Menu */
-.nav-menu {
+.nav-menu-profile {
     grid-column: 1 / -1;
     display: flex;
     gap: 20px;
@@ -29,7 +29,7 @@
     border-bottom: 1px solid #eee;
 }
 
-.nav-item {
+.nav-item-profile {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -38,7 +38,7 @@
     padding: 8px 12px;
 }
 
-.nav-item.active {
+.nav-item-profile.active {
     color: #333;
     border-bottom: 2px solid #4CAF50;
 }
