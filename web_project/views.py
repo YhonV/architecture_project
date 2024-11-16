@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from web_project.forms import RegistroForm
+
 # Create your views here.
 def inicio(request):
     return render(request, 'index.html')
@@ -20,4 +22,10 @@ def login(request):
     return render(request, 'login.html')
 
 def registro(request):
-    return render(request, 'registro.html')
+    form = RegistroForm()
+    if request.method == "POST":
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirigir después del registro
+    return render(request, "registro.html", {"form": form})
