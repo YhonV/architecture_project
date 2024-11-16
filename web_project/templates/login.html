@@ -56,15 +56,14 @@
                         </div> 
                         <div class="col-12">
                           <div class="d-grid">
-                            <button class="btn btn-outline-primary" type="submit">Iniciar sesión</button>
+                            <button class="btn btn-outline-primary"><a href="{% url 'registro' %}">Iniciar sesión</a> </button>
                           </div>
                         </div>
                         <h4 class="text-center">¿No estás registrado?</h4>
                         <div class="col-12">
                             <div class="d-grid">         
-                                <a href="/registro" style="text-decoration: none;">
-                                    <button id="btncc" class="btn btn-outline-primary" type="submit">
-                                    Crear cuenta</button>
+                                <a href="{% url 'registro' %}" class="btn btn-outline-primary" style="text-decoration: none;">
+                                    Crear cuenta
                                 </a>
                             </div>
                       </div>
@@ -80,7 +79,7 @@
                     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
                     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.min.js"></script>
-                    <script>
+                    {% comment %} <script>
                       $(document).ready(function() {
                         $('#login-form').submit(function(event) {
                           event.preventDefault();
@@ -120,7 +119,7 @@
                           });
                         });
                       });
-                    </script>
+                    </script> {% endcomment %}
                       </div>
                     </div>
                   </div>
