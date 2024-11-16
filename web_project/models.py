@@ -43,7 +43,6 @@ class Producto(models.Model):
     tipo_producto = models.ForeignKey('TipoProducto', on_delete=models.CASCADE)
     precio_unitario = models.FloatField()
     stock = models.IntegerField()
-    administrador = models.ForeignKey('Administrador', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre_producto

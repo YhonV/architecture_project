@@ -29,3 +29,11 @@ def registro(request):
             form.save()
             # Redirigir después del registro
     return render(request, "registro.html", {"form": form})
+
+def inventario(request):
+    return render(request, 'inventario.html')
+
+
+#Crear un producto en el inventario.html
+def crear_producto(request):
+    return render(request, 'crear-producto.html')
