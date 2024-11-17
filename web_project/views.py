@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.urls import reverse
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render
+from django.contrib.auth import authenticate, logout, login as auth_login
+from django.shortcuts import redirect, render
 import json
 from django.contrib.auth.models import User
 
@@ -72,10 +72,12 @@ def registro(request):
 
     return render(request, "registro.html", {"form": form})
 
-def login(request):
+def user_login(request):
     if request.method == 'POST':
         usuario = request.POST.get('email')
         password = request.POST.get('password')
+
+        print(request.POST)
 
         if not usuario:
             return JsonResponse({'status': 'error', 'message': 'Debe ingresar un nombre de usuario'}, status=400)
@@ -87,12 +89,14 @@ def login(request):
         if user is None:
             return JsonResponse({'status': 'error', 'message': 'Usuario o contraseña incorrecto'}, status=400)
         else:
-            login(request, user)
-            return JsonResponse({'status': 'success', 'redirect': reverse('inicio')})
+            auth_login(request, user)
+            return JsonResponse({'status': 'success', 'redirect': reverse('index')})
 
     return render(request,'registration/login.html')
 
-
+def exit(request):
+    logout(request)
+    return redirect('index')
 
 def inventario(request):
     

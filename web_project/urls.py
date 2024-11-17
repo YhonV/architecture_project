@@ -17,8 +17,9 @@ urlpatterns = [
     path("catalogo/", views.catalogo, name="catalogo"),
     path("perfil/", views.perfil, name="perfil"),
     path("historial/", views.historial, name="historial"),
-    path("login/", views.login, name="login"),
+    path("login/", views.user_login, name="login"),
     path("registro/", views.registro, name="registro"),
     path("inventario/", views.inventario, name="inventario"),
     path("", include(router.urls)),
+    path('logout/', views.exit , name= 'exit'),
 ]
