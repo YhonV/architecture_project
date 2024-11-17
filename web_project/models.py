@@ -43,6 +43,7 @@ class Producto(models.Model):
     tipo_producto = models.ForeignKey('TipoProducto', on_delete=models.CASCADE)
     precio_unitario = models.FloatField()
     stock = models.IntegerField()
+    imagen = models.ImageField(upload_to='productos/', null=True)
 
     def __str__(self):
         return self.nombre_producto
