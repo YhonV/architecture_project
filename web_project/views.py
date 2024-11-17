@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render
-
+import json
 from web_project.forms import RegistroForm
 from django.http import JsonResponse
 from .models import Producto, TipoProducto
@@ -95,7 +95,54 @@ def inventario(request):
         producto.save()
         return JsonResponse({"success": True, "message": "Producto creado correctamente."})
     
+    if request.method == 'DELETE':
+        print("Cuerpo de la solicitud:", request.body)
+        body = json.loads(request.body)
+        id_producto = body.get('id_producto')
+        producto = Producto.objects.get(id_producto=id_producto)
+        producto.delete()
+        return JsonResponse({"success": True, "message": "Producto eliminado correctamente."})
+    
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        print("Cuerpo de la solicitud:", request.body)
+        id_producto = data.get('id_producto')
+        nombre_producto = data.get('nombre_producto')
+        tipo_producto_nombre = data.get('tipo_producto')
+        precio_unitario = data.get('precio_unitario')
+        stock = data.get('stock')
+        
+        if not all([id_producto, nombre_producto, tipo_producto_nombre, precio_unitario, stock]):
+            return JsonResponse({"success": False, "message": "No puede haber campos vacíos."})
+        
+        try:
+            stock = int(stock)
+        except ValueError:
+            return JsonResponse({"success": False, "message": "Stock debe ser un número entero."})
+        
+        try:
+            precio_unitario = float(precio_unitario)
+        except ValueError:
+            return JsonResponse({"success": False, "message": "Precio debe ser un número positivo."}) 
+        
+        try:
+            producto = Producto.objects.get(id_producto=id_producto)
+            tipo_producto = TipoProducto.objects.get(nombre_tipo_producto=tipo_producto_nombre)
+            producto.nombre_producto = nombre_producto
+            producto.tipo_producto = tipo_producto
+            producto.precio_unitario = precio_unitario
+            if producto.precio_unitario < 0:
+                return JsonResponse({"success": False, "message": "Precio no puede ser negativo."})
+            producto.stock = stock
+            if producto.stock < 0:
+                return JsonResponse({"success": False, "message": "Stock no puede ser negativo."})
+            producto.save()
+            return JsonResponse({"success": True, "message": "Producto actualizado correctamente."})
+        except Producto.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Producto no encontrado."})
+        except TipoProducto.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Categoría no encontrada."})
+    
     productos = Producto.objects.all()
     contexto = {'productos': productos, 'categorias': TipoProducto.objects.all()}
     return render(request, 'inventario.html', contexto)
-
