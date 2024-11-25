@@ -36,10 +36,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'contact' %}" tabindex="-1" aria-disabled="true"><button type="button" class="btn btn-outline-primary">Contacto</button></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'inventario' %}" tabindex="-1" aria-disabled="true"><button type="button" class="btn btn-outline-primary">Inventario</button></a>
-                    </li>
-                    
+    
                     {% if request.user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,6 +56,9 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inventario' %}" tabindex="-1" aria-disabled="true"><button type="button" class="btn btn-outline-primary">Inventario</button></a>
+                    </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">
@@ -76,6 +76,20 @@
             </div>
         </div>
     </nav>
+
+    {% if request.user.is_authenticated %}     
+    <div class="welcome-container bg-light py-2 px-4 rounded shadow-sm">
+        <h5 class="welcome-message  fw-bold fs-6 mb-0">
+            <i class="bi bi-person-circle me-2"></i>¡Bienvenid@, {{ user.first_name }} a nuestro Minimarket!
+        </h5>
+    </div>
+    {% else %}
+    <div class="welcome-container bg-light py-2 px-4 rounded shadow-sm">
+        <h5 class="welcome-message  fw-bold fs-6 mb-0">
+            <i class="bi bi-door-open me-2"></i>¡Bienvenid@, te invitamos a iniciar sesión!
+        </h5>
+    </div>
+    {% endif %}
 
     {% if messages %}
         <div class="container mt-3">

@@ -44,17 +44,27 @@
 }
 
 .card {
-    flex: 1 1 calc(33.333% - 40px);
+    flex: 1 1 100%;
     box-sizing: border-box;
     margin: 10px;
-    transition: transform 0.3s ease; /* Agrega animación al pasar el cursor */
+    transition: transform 0.3s ease;
+}
 
+@media (min-width: 576px) {
+    .card {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+@media (min-width: 992px) {
+    .card {
+        flex: 1 1 calc(33.333% - 20px);
+    }
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Eleva ligeramente la tarjeta al hacer hover */
+    transform: translateY(-5px);
 }
-
 
 #newsletterBtn{
     display: flex;
@@ -64,17 +74,6 @@
 }
 
 
-@media (max-width: 1200px) {
-    .card {
-        flex: 1 1 calc(50% - 40px);
-    }
-}
-
-@media (max-width: 768px) {
-    .card {
-        flex: 1 1 calc(100% - 40px);
-    }
-}
 
 .toast-header{
     background-color: #39c43e;
