@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'architecture_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'compraAhorra',
+        'NAME': 'compra-ahorra',
         'USER': 'postgres',
-        'PASSWORD': 'compra123',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
     }
