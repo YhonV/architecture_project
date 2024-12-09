@@ -106,125 +106,67 @@
     </div>
 </section>
 <!-- products section -->
-<section id="products">
-    <div class="container">
-        <div class="d-flex flex-row">
-            <div class="text-muted m-2" id="res">Mostrando 9 resultados</div>
-            <div class="ml-auto mr-lg-4">
-                <div id="sorting" class="border rounded p-1 m-1"> <span class="text-muted">Ordenar por:</span> <select name="sort" id="sort">
-                        <option value="popularity"><b>Más Comprados</b></option>
-                        <option value="prcie"><b>Precio</b></option>
-                        <option value="rating"><b>Calificaciones</b></option>
-                    </select> </div>
+<div class="container-fluid my-4">
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-md-3 g-2">
+        {% for producto in productos %}
+        <div class="col-md-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}">
+                <div class="card-body">
+                    <h5 class="card-title"><b>{{ producto.nombre_producto }}</b></h5>
+                    <p class="card-text">{{ producto.desc_producto }}</p>
+                    <div class="d-flex flex-row my-2 align-items-center">
+                        <div class="text-muted">${{ producto.precio_unitario|floatformat:0 }}</div>
+                        <div class="ms-auto d-flex">
+                            <button class="border rounded bg-white sign mx-1"><span class="fa fa-plus text-orange"></span></button>
+                            <span class="px-sm-1">1</span>
+                            <button class="border rounded bg-white sign mx-1"><span class="fa fa-minus text-orange"></span></button>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2 add-to-cart"
+                            data-id="{{ producto.id_producto }}">
+                        Agregar al carrito
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv1.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Telvisor SAMSUNG 50" QLED</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$349.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv2.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor LG 42" LED</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$199.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center tn w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv3.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor HISENSE 55" LED</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$319.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv4.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor SAMSUNG 65" LED</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$419.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv5.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor LG 70" Nano Cell</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$949.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card d-relative"> <img class="card-img-top" src="{% static 'img/tv6.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor TCL 32" HD</b> </h5>
-                        <div class="rounded bg-white discount" id="orange">15% off</div>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted price"><del>$199.990</del>$169.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span>1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv2.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor LG 42" LED</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$199.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center tn w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv3.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor HISENSE 55" LED</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$319.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
-                <div class="card"> <img class="card-img-top" src="{% static 'img/tv4.jpg' %}">
-                    <div class="card-body">
-                        <h5><b>Televisor SAMSUNG 65" LED</b> </h5>
-                        <div class="d-flex flex-row my-2">
-                            <div class="text-muted">$419.990</div>
-                            <div class="ml-auto"> <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button> <span class="px-sm-1">1</span> <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button> </div>
-                        </div> <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        {% empty %}
+        <p>No hay productos disponibles.</p>
+        {% endfor %}
     </div>
-</section>
+</div>
+
+
 
 <div style="clear: both;"></div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".add-to-cart");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function () {
+                const productId = this.getAttribute("data-id");
+                
+                fetch('/agregar_al_carrito/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({ id_producto: productId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Producto agregado al carrito");
+                    } else {
+                        alert("Error: " + data.mensaje);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+    });
+    </script>
 {% endblock content %}

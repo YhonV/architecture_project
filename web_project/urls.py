@@ -22,4 +22,8 @@ urlpatterns = [
     path("inventario/", views.inventario, name="inventario"),
     path("", include(router.urls)),
     path('logout/', views.exit , name= 'exit'),
+     path('agregar_al_carrito/', views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('carrito/', views.mostrar_carrito, name='carrito'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

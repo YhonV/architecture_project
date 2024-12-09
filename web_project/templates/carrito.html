@@ -1,0 +1,32 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-4">
+    <h2>Carrito de compras</h2>
+
+    <!-- Lista de productos en el carrito -->
+    <ul class="list-group">
+        {% for id_producto, detalles in carrito.items %}
+        <li class="list-group-item">
+            <h5>{{ detalles.nombre }}</h5>
+            <p>Precio: ${{ detalles.precio_formateado }}</p> <!-- Muestra el precio formateado -->
+            <p>Cantidad: {{ detalles.cantidad }}</p> <!-- Muestra la cantidad -->
+
+            <!-- Mostrar el total por producto formateado -->
+            <p>Total por producto: ${{ detalles.total_por_producto_formateado }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Mostrar el total del carrito, que ya fue formateado -->
+    <div class="mt-4">
+        <h4>Total del carrito: ${{ carrito_total }}</h4>
+    </div>
+
+    <!-- Botón de finalizar compra -->
+    <div class="mt-4">
+        <a href="#" class="btn btn-success w-100">Finalizar compra</a>
+    </div>
+</div>
+{% endblock content %}

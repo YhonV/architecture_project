@@ -4,11 +4,10 @@ from django.contrib.auth import authenticate, logout, login as auth_login
 from django.shortcuts import redirect, render
 import json
 from django.contrib.auth.models import User
-
-
 from web_project.forms import RegistroForm
 from django.http import JsonResponse
 from .models import Producto, TipoProducto
+
 # Create your views here.
 def inicio(request):
     return render(request, 'index.html')
@@ -17,7 +16,8 @@ def contact(request):
     return render(request, 'contact.html')
 
 def catalogo(request):
-    return render(request, 'catalogo.html')
+    productos = Producto.objects.all()
+    return render(request, 'catalogo.html', {'productos': productos})
 
 def perfil(request):
     return render(request, 'perfil.html')
@@ -193,3 +193,60 @@ def inventario(request):
     productos = Producto.objects.all()
     contexto = {'productos': productos, 'categorias': TipoProducto.objects.all()}
     return render(request, 'inventario.html', contexto)
+
+
+def agregar_al_carrito(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            id_producto = data.get("id_producto")
+
+            # Buscar el producto por su UUID
+            producto = Producto.objects.get(id_producto=id_producto)
+
+            # Lógica para agregar al carrito (usando sesión como ejemplo)
+            carrito = request.session.get("carrito", {})
+            if str(id_producto) in carrito:
+                carrito[str(id_producto)]["cantidad"] += 1
+            else:
+                carrito[str(id_producto)] = {
+                    "nombre": producto.nombre_producto,
+                    "precio": producto.precio_unitario,
+                    "cantidad": 1
+                }
+            
+            request.session["carrito"] = carrito  # Guardar carrito en sesión
+            
+            return JsonResponse({"success": True, "mensaje": "Producto agregado al carrito"})
+        except Producto.DoesNotExist:
+            return JsonResponse({"success": False, "mensaje": "Producto no encontrado"}, status=404)
+        except Exception as e:
+            return JsonResponse({"success": False, "mensaje": str(e)}, status=500)
+    return JsonResponse({"success": False, "mensaje": "Método no permitido"}, status=405)
+
+def format_to_chilean_pesos(value):
+    return f"{value:,.0f}".replace(",", ".")
+
+def format_to_chilean_pesos(value):
+    """Formatea los valores como pesos chilenos con puntos de separación de miles."""
+    return f"{value:,.0f}".replace(",", ".")
+
+def mostrar_carrito(request):
+    carrito = request.session.get("carrito", {})
+    carrito_total = 0  # Variable para almacenar el total del carrito
+
+    # Calcular el total por producto y el total del carrito
+    for detalles in carrito.values():
+        detalles['total_por_producto'] = detalles['precio'] * detalles['cantidad']  # Calculamos el total por producto
+        carrito_total += detalles['total_por_producto']  # Sumamos al total del carrito
+    
+    # Formatear el total del carrito
+    carrito_total_formateado = format_to_chilean_pesos(carrito_total)
+
+    # Formatear los totales por producto
+    for detalles in carrito.values():
+        detalles['precio_formateado'] = format_to_chilean_pesos(detalles['precio'])  # Formateamos el precio
+        detalles['total_por_producto_formateado'] = format_to_chilean_pesos(detalles['total_por_producto'])  # Formateamos el total por producto
+
+    return render(request, "carrito.html", {"carrito": carrito, "carrito_total": carrito_total_formateado})
+
