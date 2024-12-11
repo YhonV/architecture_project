@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 import uuid
 
 # Modelo Cliente
 class Cliente(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     id_cliente = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombre = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
@@ -18,6 +20,7 @@ class DetalleCompra(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fecha = models.DateField()
     valor_total = models.FloatField()
+
 
     def __str__(self):
         return f"DetalleCompra {self.id_detalle_compra}"

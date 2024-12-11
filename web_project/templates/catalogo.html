@@ -109,20 +109,16 @@
 <div class="container-fluid my-4">
     <div class="row row-cols-1 row-cols-sm-3 row-cols-md-3 g-2">
         {% for producto in productos %}
-        <div class="col-md-4">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
             <div class="card h-100">
-                <img class="card-img-top" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}">
+                <!-- Imagen del producto -->
+                <div class="d-flex justify-content-center align-items-center" style="height: 180px; overflow: hidden;">
+                    <img class="img-fluid" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title"><b>{{ producto.nombre_producto }}</b></h5>
-                    <p class="card-text">{{ producto.desc_producto }}</p>
-                    <div class="d-flex flex-row my-2 align-items-center">
-                        <div class="text-muted">${{ producto.precio_unitario|floatformat:0 }}</div>
-                        <div class="ms-auto d-flex">
-                            <button class="border rounded bg-white sign mx-1"><span class="fa fa-plus text-orange"></span></button>
-                            <span class="px-sm-1">1</span>
-                            <button class="border rounded bg-white sign mx-1"><span class="fa fa-minus text-orange"></span></button>
-                        </div>
-                    </div>
+                    <h6 class="card-title text-truncate"><b>{{ producto.nombre_producto }}</b></h6>
+                    <p class="card-text text-truncate">{{ producto.desc_producto }}</p>
+                    <p class="text-muted mb-2">Precio: ${{ producto.precio_unitario|floatformat:0 }}</p>
                     <button class="btn btn-outline-primary d-flex justify-content-center w-100 rounded my-2 add-to-cart"
                             data-id="{{ producto.id_producto }}">
                         Agregar al carrito
@@ -140,10 +136,30 @@
 
 <div style="clear: both;"></div>
 
+<!-- Modal de confirmación -->
+<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Producto agregado</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          ¡El producto ha sido agregado al carrito con éxito!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Seguir comprando</button>
+          <a href="/carrito/" class="btn btn-success">Ir al carrito</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const buttons = document.querySelectorAll(".add-to-cart");
-
+    
         buttons.forEach(button => {
             button.addEventListener("click", function () {
                 const productId = this.getAttribute("data-id");
@@ -159,7 +175,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert("Producto agregado al carrito");
+                        // Mostrar el modal de confirmación
+                        const modal = new bootstrap.Modal(document.getElementById('modalConfirmacion'));
+                        modal.show();
                     } else {
                         alert("Error: " + data.mensaje);
                     }
@@ -168,5 +186,6 @@
             });
         });
     });
+    
     </script>
 {% endblock content %}

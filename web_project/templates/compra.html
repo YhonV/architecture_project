@@ -1,0 +1,9 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div class="container my-4 text-center">
+    <h2>¡Gracias por tu compra!</h2>
+    <p>Tu compra ha sido procesada con éxito.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
+</div>
+{% endblock content %}

@@ -1,0 +1,53 @@
+{% extends "template.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Compra Exitosa</h2>
+
+    <!-- Mensaje de éxito -->
+    <div class="alert alert-success text-center">
+        <h4>¡Tu compra se ha realizado correctamente!</h4>
+        <p><strong>Número de compra:</strong> {{ detalle_compra.id_detalle_compra }}</p>
+    </div>
+
+    <!-- Detalles de la compra -->
+    <h5 class="mb-4">Detalles de los productos comprados:</h5>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Valor Neto</th>
+                <th>IVA</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for compra in compras %}
+                <tr>
+                    <td>{{ compra.producto.nombre }}</td>
+                    <td>{{ compra.cantidad }}</td>
+                    <td>${{ compra.precio_unitario|floatformat:2 }}</td>
+                    <td>${{ compra.valor_neto|floatformat:2 }}</td>
+                    <td>${{ compra.valor_iva|floatformat:2 }}</td>
+                    <td>${{ compra.valor_neto|add:compra.valor_iva|floatformat:2 }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No se encontraron productos en la compra.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Total de la compra -->
+    <h4 class="text-end">Total de la compra: ${{ total_compra|floatformat:2 }}</h4>
+
+    <!-- Botón para volver a la tienda -->
+    <div class="text-center">
+        <a href="/" class="btn btn-primary btn-lg">Volver a la tienda</a>
+    </div>
+</div>
+{% endblock content %}

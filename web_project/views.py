@@ -1,12 +1,17 @@
+from gettext import translation
+from django.contrib import messages
 from django.http import JsonResponse
+from django.db import transaction
 from django.urls import reverse
 from django.contrib.auth import authenticate, logout, login as auth_login
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 import json
 from django.contrib.auth.models import User
 from web_project.forms import RegistroForm
 from django.http import JsonResponse
-from .models import Producto, TipoProducto
+from .models import Cliente, Compra, DetalleCompra, Producto, TipoProducto
+from django.utils.timezone import now
+
 
 # Create your views here.
 def inicio(request):
@@ -227,26 +232,123 @@ def agregar_al_carrito(request):
 def format_to_chilean_pesos(value):
     return f"{value:,.0f}".replace(",", ".")
 
-def format_to_chilean_pesos(value):
-    """Formatea los valores como pesos chilenos con puntos de separación de miles."""
-    return f"{value:,.0f}".replace(",", ".")
-
 def mostrar_carrito(request):
     carrito = request.session.get("carrito", {})
     carrito_total = 0  # Variable para almacenar el total del carrito
 
     # Calcular el total por producto y el total del carrito
-    for detalles in carrito.values():
+    for id_producto, detalles in carrito.items():
+        producto = get_object_or_404(Producto, id_producto=id_producto)  # Recupera el producto de la base de datos
+        detalles['imagen_url'] = producto.imagen.url if producto.imagen else '/static/images/default.jpg'
         detalles['total_por_producto'] = detalles['precio'] * detalles['cantidad']  # Calculamos el total por producto
         carrito_total += detalles['total_por_producto']  # Sumamos al total del carrito
-    
-    # Formatear el total del carrito
+
+    # Calcular IVA y total con IVA
+    iva = carrito_total * 0.19  # El 19% del total neto
+    carrito_total_iva = carrito_total + iva  # Total incluyendo IVA
+
+    # Formatear los valores
     carrito_total_formateado = format_to_chilean_pesos(carrito_total)
+    iva_formateado = format_to_chilean_pesos(iva)
+    carrito_total_iva_formateado = format_to_chilean_pesos(carrito_total_iva)
 
     # Formatear los totales por producto
     for detalles in carrito.values():
         detalles['precio_formateado'] = format_to_chilean_pesos(detalles['precio'])  # Formateamos el precio
         detalles['total_por_producto_formateado'] = format_to_chilean_pesos(detalles['total_por_producto'])  # Formateamos el total por producto
 
-    return render(request, "carrito.html", {"carrito": carrito, "carrito_total": carrito_total_formateado})
+    return render(
+        request, 
+        "carrito.html", 
+        {
+            "carrito": carrito, 
+            "carrito_total": carrito_total_formateado,
+            "iva": iva_formateado,
+            "carrito_total_iva": carrito_total_iva_formateado,
+        }
+    )
+
+
+
+def eliminar_producto(request):
+    if request.method == "POST":
+        try:
+            # Intentar leer el cuerpo de la solicitud
+            data = json.loads(request.body)
+            id_producto = data.get('id_producto')
+
+            # Validar si `id_producto` está presente
+            if not id_producto:
+                return JsonResponse({'success': False, 'mensaje': 'ID de producto no proporcionado'})
+
+            # Lógica para eliminar el producto del carrito
+            carrito = request.session.get('carrito', {})
+            if id_producto in carrito:
+                del carrito[id_producto]
+                request.session['carrito'] = carrito
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'mensaje': 'Producto no encontrado en el carrito'})
+        except json.JSONDecodeError as e:
+            # Manejar errores de análisis JSON
+            return JsonResponse({'success': False, 'mensaje': 'Error al procesar la solicitud: cuerpo mal formado'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'mensaje': str(e)})
+    return JsonResponse({'success': False, 'mensaje': 'Método no permitido'})
+
+def finalizar_compra(request):
+    # Verificar si el cliente está autenticado
+    if not request.user.is_authenticated:
+        messages.error(request, "Debes iniciar sesión para finalizar la compra.")
+        return redirect('login')
+
+    # Obtener el cliente asociado al usuario
+    try:
+        cliente = Cliente.objects.get(user=request.user)
+    except Cliente.DoesNotExist:
+        messages.error(request, "No se encontró información del cliente.")
+        return redirect('carrito')
+
+    # Obtener el carrito desde la sesión
+    carrito = request.session.get('carrito', {})
+    if not carrito:
+        messages.error(request, "El carrito está vacío.")
+        return redirect('carrito')
+
+    # Crear el DetalleCompra
+    valor_total = sum(detalles['precio'] * detalles['cantidad'] for detalles in carrito.values())
+    detalle_compra = DetalleCompra.objects.create(
+        cliente=cliente,
+        fecha=now().date(),
+        valor_total=valor_total,
+    )
+
+    # Crear cada Compra relacionada
+    for id_producto, detalles in carrito.items():
+        try:
+            producto = Producto.objects.get(id_producto=id_producto)
+            cantidad = detalles['cantidad']
+            precio_unitario = detalles['precio']
+            valor_neto = precio_unitario * cantidad
+            valor_iva = valor_neto * 0.19
+
+            Compra.objects.create(
+                detalle_compra=detalle_compra,
+                producto=producto,
+                cantidad=cantidad,
+                precio_unitario=precio_unitario,
+                valor_neto=valor_neto,
+                valor_iva=valor_iva,
+            )
+        except Producto.DoesNotExist:
+            messages.error(request, f"El producto con ID {id_producto} no existe.")
+            continue
+
+    # Vaciar el carrito
+    request.session['carrito'] = {}
+    messages.success(request, "Compra realizada con éxito.")
+    return redirect('compra_exitosa')
+
+def compra_exitosa(request):
+    return render(request, 'compra.html')
 

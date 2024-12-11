@@ -6,27 +6,101 @@
     <h2>Carrito de compras</h2>
 
     <!-- Lista de productos en el carrito -->
-    <ul class="list-group">
+    <div class="row">
         {% for id_producto, detalles in carrito.items %}
-        <li class="list-group-item">
-            <h5>{{ detalles.nombre }}</h5>
-            <p>Precio: ${{ detalles.precio_formateado }}</p> <!-- Muestra el precio formateado -->
-            <p>Cantidad: {{ detalles.cantidad }}</p> <!-- Muestra la cantidad -->
-
-            <!-- Mostrar el total por producto formateado -->
-            <p>Total por producto: ${{ detalles.total_por_producto_formateado }}</p>
-        </li>
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100">
+                <!-- Imagen del producto -->
+                <div class="d-flex justify-content-center align-items-center" style="height: 180px; overflow: hidden;">
+                    <img src="{{ detalles.imagen_url }}" class="img-fluid" alt="{{ detalles.nombre }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title text-truncate">{{ detalles.nombre }}</h6>
+                    <p class="card-text mb-1">Precio: ${{ detalles.precio_formateado }}</p>
+                    <p class="card-text mb-1">Cantidad: {{ detalles.cantidad }}</p>
+                    <p class="card-text">Total: ${{ detalles.total_por_producto_formateado }}</p>
+                </div>
+                <div class="card-footer text-center">
+                    <!-- Botón de eliminar producto -->
+                    <form method="POST" action="/eliminar_producto/" class="form-eliminar-producto">
+                        {% csrf_token %}
+                        <input type="hidden" name="id_producto" value="{{ id_producto }}">
+                        <button type="button" class="btn btn-danger btn-sm btn-eliminar" data-id="{{ id_producto }}">Eliminar</button>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+        
         {% endfor %}
-    </ul>
+    </div>
 
-    <!-- Mostrar el total del carrito, que ya fue formateado -->
+    <!-- Mostrar el total del carrito -->
     <div class="mt-4">
-        <h4>Total del carrito: ${{ carrito_total }}</h4>
+        <h4>Total Neto: ${{ carrito_total }}</h4>
+        <h4>IVA (19%): ${{ iva }}</h4>
+        <h4>Total IVA Incluido: ${{ carrito_total_iva }}</h4>
     </div>
 
     <!-- Botón de finalizar compra -->
     <div class="mt-4">
-        <a href="#" class="btn btn-success w-100">Finalizar compra</a>
+        <a href="{% url 'finalizar_compra' %}" class="btn btn-success w-100">Finalizar compra</a>
     </div>
 </div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modalEliminacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEliminacionLabel">Producto eliminado</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          ¡El producto ha sido eliminado del carrito!
+        </div>
+        <div class="modal-footer">
+          <a href="/carrito/" class="btn btn-primary">Volver al carrito</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const botonesEliminar = document.querySelectorAll(".btn-eliminar");
+
+    botonesEliminar.forEach(boton => {
+        boton.addEventListener("click", function () {
+            const productId = this.getAttribute("data-id");
+
+            fetch('/eliminar_producto/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({ id_producto: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mostrar el modal de confirmación de eliminación
+                    const modal = new bootstrap.Modal(document.getElementById('modalEliminacion'));
+                    modal.show();
+
+                    // Recargar la página después de cerrar el modal (opcional)
+                    const modalEl = document.getElementById('modalEliminacion');
+                    modalEl.addEventListener('hidden.bs.modal', () => {
+                        window.location.href = "/carrito/";
+                    });
+                } else {
+                    alert("Error: " + data.mensaje);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+});
+</script>
+  
 {% endblock content %}
