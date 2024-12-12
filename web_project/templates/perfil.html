@@ -20,10 +20,6 @@
             <i class="fas fa-box"></i>
             Mis compras
         </a>
-        <a href="#" class="nav-item-profile">
-            <i class="fas fa-question-circle"></i>
-            Ayuda
-        </a>
     </div>
 
     <!-- Sidebar -->
@@ -61,26 +57,27 @@
                     <input type="text" name="first_name" value="{{ user.first_name }}" />
                 </div>
             </div>
-
+    
             <div class="form-row">
                 <div class="form-group">
-                    <label>Tipo de documento</label>
-                    <input type="text" name="document_type" value="RUT" readonly />
+                    <label>Teléfono</label>
+                    <input type="tel" name="telefono" value="{{ cliente.telefono }}" />
                 </div>
                 <div class="form-group">
-                    <label>Celular</label>
-                    <input type="tel" name="phone" value="{{ user.phone }}" />
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" value="{{ cliente.direccion }}" />
                 </div>
                 <div class="form-group">
                     <label>Correo electrónico</label>
-                    <input type="email" name="email" value="{{ user.email }}" />
+                    <input type="email" name="email" value="{{ user.email }}" readonly />
                 </div>
             </div>
-
+    
             <div class="button-container">
                 <button type="submit" class="btn btn-outline-primary d-flex justify-content-center">Guardar</button>
             </div>
         </form>
     </div>
+    
 </div>
 {% endblock %}

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/historial-compra.css'%}">
+<link rel="stylesheet" href="{% static 'css/perfil.css' %}">
 
 <div class="profile-container">
     <!-- Header -->
@@ -11,130 +11,79 @@
     </div>
 
     <!-- Navigation Menu -->
-    <div class="nav-menu-compras">
-        <a href="{% url 'perfil' %}" class="nav-item-compras">
+    <div class="nav-menu-profile">
+        <a href="{% url 'perfil' %}" class="nav-item-profile">
             <i class="fas fa-user"></i>
             Mi perfil
         </a>
-        <a href="#" class="nav-item-compras active">
+        <a href="{% url 'historial' %}" class="nav-item-profile active">
             <i class="fas fa-box"></i>
             Mis compras
-        </a>
-        <a href="#" class="nav-item-compras">
-            <i class="fas fa-question-circle"></i>
-            Ayuda
         </a>
     </div>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="#" class="sidebar-item active">
-            <i class="fas fa-shopping-bag"></i>
-            Todas mis compras
+        <a href="{% url 'perfil' %}" class="sidebar-item">
+            <i class="fas fa-user"></i>
+            Datos personales
         </a>
         <a href="#" class="sidebar-item">
-            <i class="fas fa-clock"></i>
-            Pendientes
+            <i class="fas fa-map-marker-alt"></i>
+            Direcciones
         </a>
         <a href="#" class="sidebar-item">
-            <i class="fas fa-check-circle"></i>
-            Entregadas
+            <i class="fas fa-credit-card"></i>
+            Medios de pago
         </a>
         <a href="#" class="sidebar-item">
-            <i class="fas fa-times-circle"></i>
-            Canceladas
+            <i class="fas fa-heart"></i>
+            Mis listas
         </a>
         <a href="#" class="sidebar-item">
-            <i class="fas fa-undo"></i>
-            Devoluciones
+            <i class="fas fa-cog"></i>
+            Cambiar contraseña
         </a>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="purchases-header">
-            <h2>Mis compras</h2>
-            <div class="search-container">
-                <input type="text" placeholder="Buscar por N° de orden" class="search-input">
-                <button class="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
+        <h2>Historial de Compras</h2>
 
-        <!-- Filters -->
-        <div class="filters">
-            <select class="filter-select">
-                <option value="">Período</option>
-                <option value="last_month">Último mes</option>
-                <option value="last_3_months">Últimos 3 meses</option>
-                <option value="last_6_months">Últimos 6 meses</option>
-                <option value="last_year">Último año</option>
-            </select>
-            <select class="filter-select">
-                <option value="">Estado</option>
-                <option value="pending">Pendiente</option>
-                <option value="in_transit">En tránsito</option>
-                <option value="delivered">Entregado</option>
-                <option value="cancelled">Cancelado</option>
-            </select>
-        </div>
-
-        <!-- Purchases List -->
-        <div class="purchases-list">
-            {% for purchase in purchases %}
-            <div class="purchase-card">
-                <div class="purchase-header">
-                    <div class="purchase-status {{ purchase.status }}">
-                        <span class="status-dot"></span>
-                        {{ purchase.status_display }}
-                    </div>
-                    <div class="purchase-date">{{ purchase.date }}</div>
-                </div>
-                
-                <div class="purchase-content">
-                    <div class="purchase-image">
-                        <img src="{{ purchase.product_image }}" alt="{{ purchase.product_name }}">
-                    </div>
-                    <div class="purchase-details">
-                        <h3>Orden #{{ purchase.order_number }}</h3>
-                        <p>{{ purchase.product_name }}</p>
-                        <p class="price">${{ purchase.total_price }}</p>
-                    </div>
-                    <div class="purchase-actions">
-                        <a href="{% url 'purchase_detail' purchase.id %}" class="btn-details">Ver detalle</a>
-                        {% if purchase.status == 'delivered' %}
-                        <a href="{% url 'buy_again' purchase.id %}" class="btn-buy-again">Comprar nuevamente</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="no-purchases">
-                <i class="fas fa-shopping-bag"></i>
-                <p>No tienes compras registradas</p>
-                <a href="{% url 'index' %}" class="btn btn-outline-primary ">Comenzar a comprar</a>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Pagination -->
-        {% if purchases.has_other_pages %}
-        <div class="pagination">
-            {% if purchases.has_previous %}
-            <a href="?page={{ purchases.previous_page_number }}" class="page-link">
-                <i class="fas fa-chevron-left"></i>
-            </a>
-            {% endif %}
-            
-            <span class="current-page">Página {{ purchases.number }} de {{ purchases.paginator.num_pages }}</span>
-            
-            {% if purchases.has_next %}
-            <a href="?page={{ purchases.next_page_number }}" class="page-link">
-                <i class="fas fa-chevron-right"></i>
-            </a>
-            {% endif %}
-        </div>
+        {% if compras %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nro de Compra</th>
+                    <th>Fecha</th>
+                    <th>Productos</th>
+                    <th>Valor Neto</th>
+                    <th>IVA</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for compra in compras %}
+                <tr>
+                    <td>{{ compra.id }}</td>
+                    <td>{{ compra.fecha|date:"d/m/Y" }}</td>
+                    <td>
+                        <ul>
+                            {% for item in compra.productos %}
+                            <li>{{ item.producto.nombre_producto }} (x{{ item.cantidad }})</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>${{ compra.valor_neto|floatformat:0 }}</td>
+                    <td>${{ compra.valor_iva|floatformat:0 }}</td>
+                    <td>${{ compra.valor_total|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No tienes compras registradas.</p>
+        <a href="{% url 'catalogo' %}" class="btn btn-primary">Comenzar a comprar</a>
         {% endif %}
     </div>
 </div>

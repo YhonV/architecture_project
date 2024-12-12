@@ -3,67 +3,89 @@
 
 {% block content %}
 <div class="container my-4">
-    <h2>Carrito de compras</h2>
+    <h2 class="mb-4">Carrito de compras</h2>
 
     <!-- Lista de productos en el carrito -->
-    <div class="row">
+    <div class="row g-4">
         {% for id_producto, detalles in carrito.items %}
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card h-100">
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm border-0">
                 <!-- Imagen del producto -->
-                <div class="d-flex justify-content-center align-items-center" style="height: 180px; overflow: hidden;">
+                <div class="d-flex justify-content-center align-items-center bg-light" style="height: 180px; overflow: hidden;">
                     <img src="{{ detalles.imagen_url }}" class="img-fluid" alt="{{ detalles.nombre }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
                 </div>
                 <div class="card-body">
                     <h6 class="card-title text-truncate">{{ detalles.nombre }}</h6>
-                    <p class="card-text mb-1">Precio: ${{ detalles.precio_formateado }}</p>
-                    <p class="card-text mb-1">Cantidad: {{ detalles.cantidad }}</p>
-                    <p class="card-text">Total: ${{ detalles.total_por_producto_formateado }}</p>
+                    <p class="card-text text-muted mb-1">Precio: ${{ detalles.precio_formateado }}</p>
+                    <p class="card-text text-muted mb-1">Cantidad: {{ detalles.cantidad }}</p>
+                    <p class="card-text text-success fw-bold">Total: ${{ detalles.total_por_producto_formateado }}</p>
                 </div>
-                <div class="card-footer text-center">
+                <div class="card-footer text-center bg-white">
                     <!-- Botón de eliminar producto -->
                     <form method="POST" action="/eliminar_producto/" class="form-eliminar-producto">
                         {% csrf_token %}
                         <input type="hidden" name="id_producto" value="{{ id_producto }}">
-                        <button type="button" class="btn btn-danger btn-sm btn-eliminar" data-id="{{ id_producto }}">Eliminar</button>
-                    </form>                    
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar" data-id="{{ id_producto }}">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-        
         {% endfor %}
     </div>
 
     <!-- Mostrar el total del carrito -->
-    <div class="mt-4">
-        <h4>Total Neto: ${{ carrito_total }}</h4>
-        <h4>IVA (19%): ${{ iva }}</h4>
-        <h4>Total IVA Incluido: ${{ carrito_total_iva }}</h4>
+    <div class="mt-5 p-4 border rounded bg-light">
+        <h4 class="mb-3">Resumen de compra</h4>
+        <table class="table table-borderless mb-0">
+            <tr>
+                <td>Total Neto:</td>
+                <td class="text-end">${{ carrito_total }}</td>
+            </tr>
+            <tr>
+                <td>IVA (19%):</td>
+                <td class="text-end">${{ iva }}</td>
+            </tr>
+            <tr class="fw-bold">
+                <td>Total IVA Incluido:</td>
+                <td class="text-end text-success">${{ carrito_total_iva }}</td>
+            </tr>
+        </table>
     </div>
 
     <!-- Botón de finalizar compra -->
     <div class="mt-4">
-        <a href="{% url 'finalizar_compra' %}" class="btn btn-success w-100">Finalizar compra</a>
+        {% if carrito %}
+            <a href="{% url 'finalizar_compra' %}" class="btn btn-success btn-lg w-100 shadow">Finalizar compra</a>
+        {% else %}
+            <button class="btn btn-success btn-lg w-100 shadow" disabled>Finalizar compra</button>
+        {% endif %}
     </div>
+    {% if not carrito %}
+    <div class="alert alert-warning mt-3 text-center">
+        Tu carrito está vacío. Agrega productos para finalizar la compra.
+    </div>
+    {% endif %}
 </div>
 
 <!-- Modal de confirmación de eliminación -->
 <div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="modalEliminacionLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalEliminacionLabel">Producto eliminado</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminacionLabel">Producto eliminado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¡El producto ha sido eliminado del carrito!
+            </div>
+            <div class="modal-footer">
+                <a href="/carrito/" class="btn btn-primary">Volver al carrito</a>
+            </div>
         </div>
-        <div class="modal-body">
-          ¡El producto ha sido eliminado del carrito!
-        </div>
-        <div class="modal-footer">
-          <a href="/carrito/" class="btn btn-primary">Volver al carrito</a>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -102,5 +124,5 @@
     });
 });
 </script>
-  
+
 {% endblock content %}

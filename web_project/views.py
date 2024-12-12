@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.db import transaction
 from django.urls import reverse
 from django.contrib.auth import authenticate, logout, login as auth_login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 import json
 from django.contrib.auth.models import User
@@ -25,10 +26,42 @@ def catalogo(request):
     return render(request, 'catalogo.html', {'productos': productos})
 
 def perfil(request):
-    return render(request, 'perfil.html')
+    # Obtener el cliente asociado al usuario actual
+    cliente = Cliente.objects.filter(user=request.user).first()
 
-def historial(request):
-    return render(request, 'historial-compra.html')
+    return render(
+        request, 
+        "perfil.html", 
+        {
+            "user": request.user, 
+            "cliente": cliente,
+        }
+    )
+
+@login_required
+def historial_compras(request):
+    try:
+        cliente = request.user.cliente
+    except AttributeError:
+        cliente = None
+
+    compras = []
+    if cliente:
+        # Obtener todas las compras del cliente con productos relacionados
+        detalles_compras = DetalleCompra.objects.filter(cliente=cliente).prefetch_related('compra_set__producto')
+
+        for detalle in detalles_compras:
+            
+            compras.append({
+                'id': detalle.id_detalle_compra,
+                'fecha': detalle.fecha,
+                'productos': detalle.compra_set.all(),  
+                'valor_neto': detalle.valor_total,
+                'valor_iva': detalle.valor_total * 0.19,
+                'valor_total': detalle.valor_total * 1.19,
+            })
+
+    return render(request, 'historial-compra.html', {'compras': compras})
 
 def registro(request):
     form = RegistroForm()
@@ -306,8 +339,21 @@ def finalizar_compra(request):
     try:
         cliente = Cliente.objects.get(user=request.user)
     except Cliente.DoesNotExist:
-        messages.error(request, "No se encontró información del cliente.")
-        return redirect('carrito')
+        if request.method == "POST":
+            # Crear el cliente con datos ingresados en el modal
+            Cliente.objects.create(
+                user=request.user,
+                nombre=f"{request.user.first_name} {request.user.last_name}",
+                email=request.user.email,
+                direccion=request.POST.get("direccion"),
+                telefono=request.POST.get("telefono"),
+            )
+            return redirect('finalizar_compra')
+        else:
+            # Mostrar el modal solicitando los datos
+            return render(request, 'fin-compra.html', {
+                'solicitar_datos_cliente': True,
+            })
 
     # Obtener el carrito desde la sesión
     carrito = request.session.get('carrito', {})
@@ -346,9 +392,16 @@ def finalizar_compra(request):
 
     # Vaciar el carrito
     request.session['carrito'] = {}
+
+    # Guardar el número de compra en la sesión
+    request.session['detalle_compra_id'] = str(detalle_compra.id_detalle_compra)
     messages.success(request, "Compra realizada con éxito.")
     return redirect('compra_exitosa')
 
+
 def compra_exitosa(request):
-    return render(request, 'compra.html')
+    # Recuperar el ID del DetalleCompra desde la sesión
+    detalle_compra_id = request.session.get('detalle_compra_id', None)
+    return render(request, 'compra.html', {'detalle_compra_id': detalle_compra_id})
+
 
